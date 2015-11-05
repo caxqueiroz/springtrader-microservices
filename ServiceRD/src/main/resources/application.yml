@@ -9,3 +9,15 @@ eureka:
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+logging:
+  level:
+     io:
+        pivotal: DEBUG
+     org:
+        springframework:
+           web: WARN
+           cloud: DEBUG
+     com:
+       netflix:
+         hystrix: DEBUG

@@ -11,7 +11,7 @@ eureka:
 spring:
   profiles: local
 server:
-  port: 8083
+  port: 8086
 eureka:
   client:
     serviceUrl:
@@ -35,4 +35,4 @@ logging:
 api:
  url:
    company: http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}
-   quote: http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}
+   quote: https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.quote where symbol in ("{symbol}")&format=json&env=store://datatables.org/alltableswithkeys

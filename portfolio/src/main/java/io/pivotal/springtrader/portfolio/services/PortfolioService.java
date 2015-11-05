@@ -117,27 +117,24 @@ public class PortfolioService {
 		if (order.getOrderType() == OrderType.BUY) {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
 			ResponseEntity<Double> result= restTemplate.getForEntity("http://accounts/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
-			if (result.getStatusCode() == HttpStatus.OK) {
-				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
-				return repository.save(order);
-			} else {
-				//TODO: throw exception - not enough funds!
-				logger.warn("PortfolioService:addOrder - decresing balance HTTP not ok: ");
-				return null;
-			}
+			return saveOrder(order, result);
 		} else {
 			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
 			ResponseEntity<Double> result= restTemplate.getForEntity("http://accounts/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
-			if (result.getStatusCode() == HttpStatus.OK) {
-				logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
-				return repository.save(order);
-			} else {
-				//TODO: throw exception - negative value???
-				logger.warn("PortfolioService:addOrder - increasing balance HTTP not ok: ");
-				return null;
-			}
+			return saveOrder(order,result);
 		}
 		
 			
+	}
+
+	private Order saveOrder(Order order, ResponseEntity<Double> result) {
+		if (result.getStatusCode() == HttpStatus.OK) {
+            logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
+            return repository.save(order);
+        } else {
+            //TODO: throw exception - not enough funds!
+            logger.warn("PortfolioService:addOrder - decresing balance HTTP not ok: ");
+            return null;
+        }
 	}
 }

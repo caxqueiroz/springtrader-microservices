@@ -27,8 +27,8 @@ import java.util.List;
  */
 @RestController
 public class QuoteController {
-	private static final Logger logger = LoggerFactory
-			.getLogger(QuoteController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
 	
 	/**
 	 * The service to delegate calls to.
@@ -48,8 +48,7 @@ public class QuoteController {
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
 		Quote quote = service.getQuote(symbol);
 		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
-		return new ResponseEntity<Quote>(quote,
-				getNoCacheHeaders(), HttpStatus.OK);
+		return new ResponseEntity<>(quote, getNoCacheHeaders(), HttpStatus.OK);
 	}
 	
 	/**
@@ -63,7 +62,7 @@ public class QuoteController {
 		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
 		List<CompanyInfo> companies = service.getCompanyInfo(name);
 		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
-		return new ResponseEntity<List<CompanyInfo>>(companies, HttpStatus.OK);
+		return new ResponseEntity<>(companies, HttpStatus.OK);
 	}
 	
 	/**
@@ -85,9 +84,7 @@ public class QuoteController {
 	 */
 	@ExceptionHandler({Exception.class})
 	public void handleException(Exception e, HttpServletResponse response) throws IOException {
-		logger.warn("Handle Error: " + e.getMessage());
-		e.printStackTrace();
+		logger.error("Handle Error: " + e.getMessage());
 		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
-	    //return "ERROR: " + e.getMessage();
 	}
 }

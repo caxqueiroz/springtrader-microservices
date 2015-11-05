@@ -21,7 +21,7 @@ public class CustomCredentialsService implements UserDetailsService {
 	private static final Logger logger = LoggerFactory.getLogger(CustomCredentialsService.class);
 	
 	@Autowired
-	private AccountsIntegrationService accountservice;
+	private AccountsIntegrationService accountsIntegrationService;
 			
 	@Override
 	public UserDetails loadUserByUsername(String username)
@@ -33,7 +33,7 @@ public class CustomCredentialsService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 		}
 		
-		Account account = accountservice.getAccount(username);
+		Account account = accountsIntegrationService.getAccount(username);
 		logger.info("Got account in credentials: " + account);
 		UserDetails custom = new CustomDetails(account);
 		

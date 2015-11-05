@@ -7,6 +7,7 @@ import io.pivotal.springtrader.web.domain.Quote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,6 +34,9 @@ public class QuotesIntegrationService {
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private DiscoveryClient discoveryClient;
 	
 	private static List<String> symbolsIT = Arrays.asList("EMC", "ORCL", "IBM", "INTC", "AMD", "HPQ", "CSCO", "AAPL");
 	private static List<String> symbolsFS = Arrays.asList("JPM", "C", "MS", "BAC", "GS", "WFC","BK");
@@ -66,13 +70,12 @@ public class QuotesIntegrationService {
 		CompanyInfo[] infos = restTemplate.getForObject("http://quotes/company/{name}", CompanyInfo[].class, name);
 		return Arrays.asList(infos);
 	}
+
+
 	private List<CompanyInfo> getCompaniesFallback(String name) {
 		List<CompanyInfo> infos = new ArrayList<>();
 		return infos;
 	}
-	
-	
-	
 
 	
 	//TODO: prime location for a redis/gemfire caching service!
@@ -86,9 +89,8 @@ public class QuotesIntegrationService {
 	}
 	
 	private List<String> pickRandomThree(List<String> symbols) {
-		List<String> list = new ArrayList<>();
 		Collections.shuffle(symbols);
-	    list = symbols.subList(0, QUOTES_NUMBER);
-	    return list;
+	    return symbols.subList(0, QUOTES_NUMBER);
+
 	}
 }

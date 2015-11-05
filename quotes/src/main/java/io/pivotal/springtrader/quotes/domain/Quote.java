@@ -10,7 +10,34 @@ import java.util.Date;
  * Represents a point in time price and information for a company's stock.
  * 
  * @author David Ferreira Pinto
+ * @author cq
+ * Changed to use Yahoo finance.
  *
+ * {
+ * "query": {
+ * "count": 1,
+ * "created": "2015-11-04T12:51:29Z",
+ * "lang": "en-US",
+ * "results": {
+ * "quote": {
+ * "symbol": "TSLA",
+ * "AverageDailyVolume": "4689950",
+ * "Change": "-5.44",
+ * "DaysLow": "207.75",
+ * "DaysHigh": "214.44",
+ * "YearLow": "181.40",
+ * "YearHigh": "286.65",
+ * "MarketCapitalization": "26.49B",
+ * "LastTradePriceOnly": "208.35",
+ * "DaysRange": "207.75 - 214.44",
+ * "Name": "Tesla Motors, Inc.",
+ * "Symbol": "TSLA",
+ * "Volume": "8365546",
+ * "StockExchange": "NMS"
+ * }
+ * }
+ * }
+ * }
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
