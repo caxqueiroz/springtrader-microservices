@@ -30,7 +30,7 @@ public class AccountsIntegrationService {
 	
 	public Map<String,Object> login(AuthenticationRequest request){
 		logger.debug("logging in with userId:" + request.getUsername());
-		Map<String,Object> result = (Map<String, Object>) restTemplate.postForObject("http://accounts/login/".toString(), request, Map.class);
+		Map<String,Object> result = (Map<String, Object>) restTemplate.postForObject("http://accounts/login/", request, Map.class);
 		return result;
 	}
 	

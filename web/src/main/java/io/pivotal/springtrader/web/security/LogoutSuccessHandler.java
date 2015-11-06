@@ -15,8 +15,7 @@ import java.io.IOException;
 
 @Component
 public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
-	private static final Logger logger = LoggerFactory
-			.getLogger(LogoutSuccessHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(LogoutSuccessHandler.class);
 	@Autowired
 	private AccountsIntegrationService service;
 

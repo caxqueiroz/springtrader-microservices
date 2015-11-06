@@ -21,23 +21,22 @@ import java.util.Map;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	private AccountsIntegrationService service;
+	private AccountsIntegrationService accountsIntegrationService;
 
 	@Override
-	public Authentication authenticate(Authentication authentication)
-			throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
 		String name = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		AuthenticationRequest request = new AuthenticationRequest();
 		request.setUsername(name);
 		request.setPassword(password);
 		try {
-			Map<String, Object> params = service.login(request);
+			Map<String, Object> params = accountsIntegrationService.login(request);
 			if (params != null) {
 				List<GrantedAuthority> grantedAuths = new ArrayList<>();
 				grantedAuths.add(new SimpleGrantedAuthority("USER"));
-				Authentication auth = new UsernamePasswordAuthenticationToken(
-						name, password, grantedAuths);
+				Authentication auth = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
 				return auth;
 			} else {
 				throw new BadCredentialsException("Username not found");

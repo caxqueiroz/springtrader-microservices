@@ -143,7 +143,7 @@ public class AccountService {
 			account.setLastlogin(new Date());
 			account = accounts.save(account); // persist new auth token and last
 												// login
-			loginResponse = new HashMap<String, Object>();
+			loginResponse = new HashMap<>();
 
 			loginResponse.put("authToken", account.getAuthtoken());
 			loginResponse.put("accountid", account.getId());

@@ -7,6 +7,7 @@ import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,6 +46,7 @@ public class QuoteService {
 	 * @return The quote object or null if not found.
 	 * @throws SymbolNotFoundException 
 	 */
+	@Cacheable("quotes")
 	public Quote getQuote(String symbol) throws SymbolNotFoundException {
 		logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
 		Map<String, String> params = new HashMap<String, String>();

@@ -73,16 +73,14 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public ResponseEntity<String> save(@RequestBody Account accountRequest,
-			UriComponentsBuilder builder) {
+	public ResponseEntity<String> save(@RequestBody Account accountRequest, UriComponentsBuilder builder) {
 
-		logger.debug("AccountController.save: userId="
-				+ accountRequest.getUserid());
+		logger.debug("AccountController.save: userId=" + accountRequest.getUserid());
 
 		Integer accountProfileId = this.service.saveAccount(accountRequest);
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(builder.path("/account/{id}")
-				.buildAndExpand(accountProfileId).toUri());
+		responseHeaders.setLocation(builder.path("/account/{id}").buildAndExpand(accountProfileId).toUri());
+
 		return new ResponseEntity<String>(responseHeaders, HttpStatus.CREATED);
 	}
 	/**

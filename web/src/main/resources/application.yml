@@ -8,6 +8,10 @@ server:
 #    serviceUrl:
 #        defaultZone: ${vcap.services.eureka-service.credentials.uri:http://localsadsa:8761}/eureka/
 
+security:
+  basic:
+    enabled: false
+
 pivotal:
   summary:
     quotes: 3

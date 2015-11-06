@@ -1,5 +1,7 @@
 package io.pivotal.springtrader.web.integration;
 
+
+import com.netflix.discovery.DiscoveryClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.pivotal.springtrader.web.domain.CompanyInfo;
 import io.pivotal.springtrader.web.domain.MarketSummary;
@@ -7,7 +9,6 @@ import io.pivotal.springtrader.web.domain.Quote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,7 +31,7 @@ public class QuotesIntegrationService {
 	
 	//10 minutes in milliseconds
 	private final static long REFRESH_PERIOD = 600000l;
-	
+
 	@Autowired
 	@LoadBalanced
 	private RestTemplate restTemplate;

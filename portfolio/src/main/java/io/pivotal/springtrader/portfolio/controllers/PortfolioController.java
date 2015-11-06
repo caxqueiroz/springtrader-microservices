@@ -46,7 +46,7 @@ public class PortfolioController {
 		logger.debug("PortfolioController: Retrieving portfolio with user id:" + accountId);
 		Portfolio folio = service.getPortfolio(accountId);
 		logger.debug("PortfolioController: Retrieved portfolio:" + folio);
-		return new ResponseEntity<Portfolio>(folio, getNoCacheHeaders(), HttpStatus.OK);
+		return new ResponseEntity<>(folio, getNoCacheHeaders(), HttpStatus.OK);
 	}
 	
 	private HttpHeaders getNoCacheHeaders() {

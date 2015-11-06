@@ -49,21 +49,13 @@ public class TradeController {
 		
 		model.addAttribute("search", new Search());
 		//check if user is logged in!
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    String currentUserName = authentication.getName();
-		    logger.debug("User logged in: " + currentUserName);
-		    model.addAttribute("order", new Order());
-		    //TODO: add account summary?
-		    try {
-		    	model.addAttribute("portfolio",portfolioIntegrationService.getPortfolio(currentUserName));
-		    } catch (HttpServerErrorException e) {
-		    	model.addAttribute("portfolioRetrievalError",e.getMessage());
-		    }
-		}
+		checkUserAuthentication(model);
 		
 		return "trade";
 	}
+
+
+
 	@RequestMapping(value = "/trade", method = RequestMethod.POST)
 	public String showTrade(Model model, @ModelAttribute("search") Search search) {
 		logger.debug("/trade.POST - symbol: " + search.getName());
@@ -78,18 +70,7 @@ public class TradeController {
 			model.addAttribute("quotes", newQuotes);
 		}
 		//check if user is logged in!
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    String currentUserName = authentication.getName();
-		    logger.debug("User logged in: " + currentUserName);
-		    model.addAttribute("order", new Order());
-		    //TODO: add portfolio and account summary.
-		    try {
-		    	model.addAttribute("portfolio",portfolioIntegrationService.getPortfolio(currentUserName));
-		    } catch (HttpServerErrorException e) {
-		    	model.addAttribute("portfolioRetrievalError",e.getMessage());
-		    }
-		}
+		checkUserAuthentication(model);
 		
 		return "trade";
 	}
@@ -134,11 +115,22 @@ public class TradeController {
 		List<Quote> quotes = result.parallelStream().filter(n -> n.getStatus().startsWith("SUCCESS")).collect(Collectors.toList());
 		return quotes;
 	}
-	
-	private Quote getQuote(String symbol) {
-		return quotesIntegrationService.getQuote(symbol);
+
+	private void checkUserAuthentication(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			String currentUserName = authentication.getName();
+			logger.debug("User logged in: " + currentUserName);
+			model.addAttribute("order", new Order());
+			//TODO: add account summary?
+			try {
+				model.addAttribute("portfolio",portfolioIntegrationService.getPortfolio(currentUserName));
+			} catch (HttpServerErrorException e) {
+				model.addAttribute("portfolioRetrievalError",e.getMessage());
+			}
+		}
 	}
-	
+
 	@ExceptionHandler({ Exception.class })
 	public ModelAndView error(HttpServletRequest req, Exception exception) {
 		logger.debug("Handling error: " + exception);
@@ -149,4 +141,10 @@ public class TradeController {
 		exception.printStackTrace();
 		return model;
 	}
+	
+	private Quote getQuote(String symbol) {
+		return quotesIntegrationService.getQuote(symbol);
+	}
+	
+
 }
