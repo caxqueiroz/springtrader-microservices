@@ -32,9 +32,9 @@ public class QuoteService {
     private String companyUrl = "http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}";
 
     @Value("${api.url.quote}")
-//    private String quoteUrl = "http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}";
-	  private String quoteUrl = "https://query.yahooapis.com/v1/public/yql?q=select * " +
-			"from yahoo.finance.quote where symbol in (\"{symbol}\")&format=json&env=store://datatables.org/alltableswithkeys";
+    private String quoteUrl = "http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}";
+//	  private String quoteUrl = "https://query.yahooapis.com/v1/public/yql?q=select * " +
+//			"from yahoo.finance.quote where symbol in (\"{symbol}\")&format=json&env=store://datatables.org/alltableswithkeys";
 
 	
 	private RestTemplate restTemplate = new RestTemplate();
@@ -52,14 +52,14 @@ public class QuoteService {
 
 
 
-	    Map quote = restTemplate.getForObject(quoteUrl, Map.class, params);
+	    Quote quote = restTemplate.getForObject(quoteUrl, Quote.class, params);
         logger.debug("QuoteService.getQuote: retrieved quote: " + quote);
         
-        if (quote.get("query") ==  null) {
+        if (quote.getSymbol() ==  null) {
         	throw new SymbolNotFoundException("Symbol not found: " + symbol);
         }
 
-		return null;
+		return quote;
 	}
 	
 	/**

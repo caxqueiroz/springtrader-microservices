@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * @author David Ferreira Pinto
  *
  */
-public class QuoteServiceTest {
+public class QuoteServiceIntegrationTest {
 
 	QuoteService service = new QuoteService();
 	/**
