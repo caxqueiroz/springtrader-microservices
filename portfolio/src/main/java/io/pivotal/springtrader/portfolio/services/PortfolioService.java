@@ -24,8 +24,8 @@ import java.util.List;
  */
 @Service
 public class PortfolioService {
-	private static final Logger logger = LoggerFactory
-			.getLogger(PortfolioService.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(PortfolioService.class);
 
 	/**
 	 * The order repository to store Order objects.

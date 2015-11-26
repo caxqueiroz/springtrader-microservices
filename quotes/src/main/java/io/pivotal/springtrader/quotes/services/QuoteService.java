@@ -32,10 +32,10 @@ public class QuoteService {
     private static final Logger logger = LoggerFactory.getLogger(QuoteService.class);
 
 	@Value("${api.url.company}")
-    private String companyUrl = "http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}";
+    private String companyUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input={name}";
 
     @Value("${api.url.quote}")
-    private String quoteUrl = "http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}";
+    private String quoteUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol={symbol}";
 
 	
 	private RestOperations restOperations = new RestTemplate();

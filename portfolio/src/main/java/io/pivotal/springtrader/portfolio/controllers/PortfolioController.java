@@ -27,8 +27,8 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 @RestController
 public class PortfolioController {
-	private static final Logger logger = LoggerFactory
-			.getLogger(PortfolioController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(PortfolioController.class);
 
 	/**
 	 * the service to delegate to.
