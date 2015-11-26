@@ -9,5 +9,5 @@ env:
 applications:
 - name: webtrader
   random-route: true
-  path: target/web-0.0.1-SNAPSHOT.jar
+  path: target/web-1.0.0-SNAPSHOT.jar
   services: [ service-registry, circuit-breaker-dashboard ]

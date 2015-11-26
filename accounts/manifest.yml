@@ -9,5 +9,5 @@ env:
 applications:
 - name: accounts
   random-route: true
-  path: target/accounts-0.0.1-SNAPSHOT.jar
+  path: target/accounts-1.0.0-SNAPSHOT.jar
   services: [ mysql-dev, service-registry, circuit-breaker-dashboard ]
