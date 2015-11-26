@@ -23,6 +23,7 @@ import java.util.List;
  * - /quote/{symbol} - Retrieves the current quote for a given symbol.
  * - /company/{name} - Retrieves a list of company information for companies that match the {name}.
  * @author David Ferreira Pinto
+ * @author cq
  *
  */
 @RestController
@@ -31,10 +32,10 @@ public class QuoteController {
 	private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
 	
 	/**
-	 * The service to delegate calls to.
+	 * The quoteService to delegate calls to.
 	 */
 	@Autowired
-	private QuoteService service;
+	private QuoteService quoteService;
 
 	/**
 	 * Retrives the current quote for the given symbol.
@@ -46,7 +47,7 @@ public class QuoteController {
 	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
 	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws SymbolNotFoundException {
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
-		Quote quote = service.getQuote(symbol);
+		Quote quote = quoteService.getQuote(symbol);
 		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
 		return new ResponseEntity<>(quote, getNoCacheHeaders(), HttpStatus.OK);
 	}
@@ -60,7 +61,7 @@ public class QuoteController {
 	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
 	public ResponseEntity<List<CompanyInfo>> getCompanies(@PathVariable("name") final String name) {
 		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
-		List<CompanyInfo> companies = service.getCompanyInfo(name);
+		List<CompanyInfo> companies = quoteService.getCompanyInfo(name);
 		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
 		return new ResponseEntity<>(companies, HttpStatus.OK);
 	}

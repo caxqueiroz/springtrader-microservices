@@ -34,7 +34,7 @@ logging:
 ---
 api:
  url:
-   company: http://dev.markitondemand.com/Api/v2/Lookup/json?input={name}
-   quote: http://dev.markitondemand.com/Api/v2/Quote/json?symbol={symbol}
+   company: http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input={name}
+   quote: http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol={symbol}
 
 #https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.quote where symbol in ("{symbol}")&format=json&env=store://datatables.org/alltableswithkeys

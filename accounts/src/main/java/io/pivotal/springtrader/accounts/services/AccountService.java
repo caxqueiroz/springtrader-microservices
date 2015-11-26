@@ -11,15 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 /**
- * The service in the accounts microservice.
+ * The service in the accountRepository microservice.
  * 
  * @author David Ferreira Pinto
+ * @author cq
  *
  */
 @Service
@@ -28,10 +30,10 @@ public class AccountService {
 	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
 	/**
-	 * The accounts repository.
+	 * The accountRepository repository.
 	 */
 	@Autowired
-	AccountRepository accounts;
+	AccountRepository accountRepository;
 
 	/**
 	 * Retrieve an account with given id.
@@ -40,17 +42,17 @@ public class AccountService {
 	 * @param id The id of the account.
 	 * @return The account object if found or throws a NoRecordsFoundException.
 	 */
-	public Account findAccount(Integer id) {
+	public Account getAccount(Integer id) {
 
-		logger.debug("AccountService.findAccount: id=" + id);
+		logger.debug("AccountService.getAccount: id=" + id);
 
-		Account account = accounts.findOne(id);
+		Account account = accountRepository.findOne(id);
 		if (account == null) {
-			logger.warn("AccountService.findAccount: could not find account with id: " + id);
+			logger.warn("AccountService.getAccount: could not find account with id: " + id);
 			throw new NoRecordsFoundException();
 		}
 
-		logger.info(String.format("AccountService.findAccount - retrieved account with id: %s. Payload is: %s", id, account));
+		logger.info(String.format("AccountService.getAccount - retrieved account with id: %s. Payload is: %s", id, account));
 
 		return account;
 	}
@@ -62,17 +64,17 @@ public class AccountService {
 	 * @param id The user id of the account.
 	 * @return The account object if found or throws a NoRecordsFoundException.
 	 */
-	public Account findAccount(String id) {
+	public Account getAccount(String id) {
 
-		logger.debug("AccountService.findAccount: id=" + id);
+		logger.debug("AccountService.getAccount: id=" + id);
 
-		Account account = accounts.findByUserid(id);
+		Account account = accountRepository.findByUserid(id);
 		if (account == null) {
-			logger.warn("AccountService.findAccount: could not find account with id: " + id);
+			logger.warn("AccountService.getAccount: could not find account with id: " + id);
 			throw new NoRecordsFoundException();
 		}
 
-		logger.info(String.format("AccountService.findAccount - retrieved account with id: %s. Payload is: %s", id, account));
+		logger.info(String.format("AccountService.getAccount - retrieved account with id: %s. Payload is: %s", id, account));
 
 		return account;
 	}
@@ -92,7 +94,7 @@ public class AccountService {
 			throw new AuthenticationException("Authorization Token is null");
 		}
 		Account accountProfile = null;
-		accountProfile = accounts.findByAuthtoken(token);
+		accountProfile = accountRepository.findByAuthtoken(token);
 		if (accountProfile == null) {
 			logger.error("AccountService.findAccountProfileByAuthToken(): accountProfile is null for token="
 					+ token);
@@ -119,7 +121,7 @@ public class AccountService {
 			accountRequest.setLogoutcount(0);
 		}
 
-		Account account = accounts.save(accountRequest);
+		Account account = accountRepository.save(accountRequest);
 		logger.info("AccountService.saveAccount: account saved: " + account);
 		return account.getId();
 	}
@@ -135,13 +137,13 @@ public class AccountService {
 	public Map<String, Object> login(String username, String password) {
 		logger.debug("login in user: " + username);
 		Map<String, Object> loginResponse = null;
-		Account account = accounts.findByUseridAndPasswd(username, password);
+		Account account = accountRepository.findByUseridAndPasswd(username, password);
 		if (account != null) {
 			logger.debug("Found Account for user: " + username);
 			account.setAuthtoken(UUID.randomUUID().toString());
 			account.setLogincount(account.getLogincount() + 1);
 			account.setLastlogin(new Date());
-			account = accounts.save(account); // persist new auth token and last
+			account = accountRepository.save(account); // persist new auth token and last
 												// login
 			loginResponse = new HashMap<>();
 
@@ -169,15 +171,62 @@ public class AccountService {
 	 */
 	public Account logout(String userId) {
 		logger.debug("AccountService.logout: Logging out account with userId: " + userId);
-		Account account = accounts.findByUserid(userId);
+		Account account = accountRepository.findByUserid(userId);
 		if (account != null) {
 			account.setAuthtoken(null); // remove token
 			account.setLogoutcount(account.getLogoutcount() + 1);
-			accounts.save(account);
+			accountRepository.save(account);
 			logger.info("AccountService.logout: Account logged out: " + account.getUserid());
 		} else {
 			logger.warn("AccountService.logout: Could not find account to logout with userId: " + userId);
 		}
 		return account;
+	}
+
+	/**
+	 * Only positive amounts can be added to the balance.
+	 * @param amount
+	 * @param userId
+	 * @return
+	 */
+	public double increaseBalance(double amount, String userId) {
+
+		Account accountResponse = accountRepository.findByUserid(userId);
+
+		BigDecimal currentBalance = accountResponse.getBalance();
+
+		BigDecimal newBalance = currentBalance.add(new BigDecimal(amount));
+
+		if(amount > 0.0){
+			logger.debug("AccountController.increaseBalance: new balance='" + newBalance + "'.");
+			accountResponse.setBalance(newBalance);
+			saveAccount(accountResponse);
+		}
+
+		return accountResponse.getBalance().doubleValue();
+
+	}
+
+	/**
+	 *
+	 * @param amount
+	 * @param accountId
+	 * @return
+	 */
+	public double decreaseBalance(double amount, String accountId) {
+
+		Account accountResponse = accountRepository.findByUserid(accountId);
+
+		BigDecimal currentBalance = accountResponse.getBalance();
+
+		if(currentBalance.doubleValue() >= amount){
+            BigDecimal newBalance = currentBalance.subtract(new BigDecimal(amount));
+			logger.debug("AccountController.decreaseBalance: new balance='" + newBalance + "'.");
+			accountResponse.setBalance(newBalance);
+			saveAccount(accountResponse);
+		}
+
+		return accountResponse.getBalance().doubleValue();
+
 	}
 }

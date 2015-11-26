@@ -1,5 +1,7 @@
 package io.pivotal.springtrader.quotes;
 
+
+import io.pivotal.springtrader.quotes.domain.Quote;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -24,10 +26,12 @@ public class QuotesApplication {
     }
 
     @Bean
-    LocalRegionFactoryBean<Integer, Integer> localRegionFactoryBean(final Cache cache) {
-        return new LocalRegionFactoryBean<Integer, Integer>() {{
-            setCache(cache);
+    LocalRegionFactoryBean<java.lang.String, Quote> quotesRegionFactoryBean(final Cache cache) {
+        return new LocalRegionFactoryBean<java.lang.String, Quote>() {{
             setName("quotes");
+            setCache(cache);
+            setEnableGateway(false);
+            setRegionName("quotes");
         }};
     }
 
@@ -39,6 +43,6 @@ public class QuotesApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(QuotesApplication.class, args);
+        SpringApplication.run(QuotesApplication.class,args);
     }
 }

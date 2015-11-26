@@ -48,7 +48,7 @@ public class AccountServiceTest {
 	@Test
 	public void doFindAccount() {
 		when(repo.findOne(ServiceTestConfiguration.PROFILE_ID)).thenReturn(ServiceTestConfiguration.account());
-		assertEquals(service.findAccount(ServiceTestConfiguration.PROFILE_ID).toString(),ServiceTestConfiguration.account().toString());
+		assertEquals(service.getAccount(ServiceTestConfiguration.PROFILE_ID).toString(),ServiceTestConfiguration.account().toString());
 	}
 	/**
 	 * test retrieval of account by string - userid.
@@ -56,7 +56,7 @@ public class AccountServiceTest {
 	@Test
 	public void doFindAccountUserId() {
 		when(repo.findByUserid(ServiceTestConfiguration.USER_ID)).thenReturn(ServiceTestConfiguration.account());
-		assertEquals(service.findAccount(ServiceTestConfiguration.USER_ID).toString(),ServiceTestConfiguration.account().toString());
+		assertEquals(service.getAccount(ServiceTestConfiguration.USER_ID).toString(),ServiceTestConfiguration.account().toString());
 	}
 	/**
 	 * test retrieval of account by string - userid, with no account found.
@@ -64,7 +64,7 @@ public class AccountServiceTest {
 	@Test(expected=NoRecordsFoundException.class)
 	public void doFindAccountUserIdNotFound() {
 		when(repo.findByUserid(ServiceTestConfiguration.BAD_USER_ID)).thenReturn(null);
-		service.findAccount(ServiceTestConfiguration.BAD_USER_ID);
+		service.getAccount(ServiceTestConfiguration.BAD_USER_ID);
 	}
 	/**
 	 * test retrieval of account not found.
@@ -72,7 +72,7 @@ public class AccountServiceTest {
 	@Test(expected=NoRecordsFoundException.class)
 	public void doFindNullAccount() {
 		when(repo.findOne(999)).thenReturn(null);
-		service.findAccount(999);
+		service.getAccount(999);
 	}
 	
 	/**

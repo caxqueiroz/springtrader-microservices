@@ -80,7 +80,7 @@ public class AccountsControllerTest {
 	 */
 	@Test
 	public void doGetAccount() throws Exception {
-		when(service.findAccount(ServiceTestConfiguration.PROFILE_ID))
+		when(service.getAccount(ServiceTestConfiguration.PROFILE_ID))
 				.thenReturn(ServiceTestConfiguration.account());
 
 		mockMvc.perform(
@@ -122,8 +122,11 @@ public class AccountsControllerTest {
 	 */
 	@Test
 	public void doIncreaseBalance() throws Exception {
-		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+		when(service.getAccount(ServiceTestConfiguration.USER_ID))
 				.thenReturn(ServiceTestConfiguration.account());
+
+        when(service.increaseBalance(1000,ServiceTestConfiguration.USER_ID))
+                .thenReturn(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue() + 1000);
 
 		MvcResult result = mockMvc.perform(
 				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/increaseBalance/" + 1000)
@@ -144,7 +147,7 @@ public class AccountsControllerTest {
 	 */
 	@Test
 	public void doIncreaseBalanceNegative() throws Exception {
-		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+		when(service.getAccount(ServiceTestConfiguration.USER_ID))
 				.thenReturn(ServiceTestConfiguration.account());
 
 		MvcResult result = mockMvc.perform(
@@ -166,8 +169,11 @@ public class AccountsControllerTest {
 	 */
 	@Test
 	public void doDecreaseBalance() throws Exception {
-		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+		when(service.getAccount(ServiceTestConfiguration.USER_ID))
 				.thenReturn(ServiceTestConfiguration.account());
+
+		when(service.decreaseBalance(10,ServiceTestConfiguration.USER_ID))
+				.thenReturn(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue() - 10);
 
 		mockMvc.perform(
 				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/decreaseBalance/" + 10)
@@ -187,11 +193,14 @@ public class AccountsControllerTest {
 	 */
 	@Test
 	public void doDecreaseBalanceNoFunds() throws Exception {
-		when(service.findAccount(ServiceTestConfiguration.USER_ID))
+		when(service.getAccount(ServiceTestConfiguration.USER_ID))
 				.thenReturn(ServiceTestConfiguration.account());
+        double amount = ServiceTestConfiguration.ACCOUNT_BALANCE.add(BigDecimal.TEN).doubleValue();
+        when(service.decreaseBalance(amount,ServiceTestConfiguration.USER_ID))
+                .thenReturn(ServiceTestConfiguration.ACCOUNT_BALANCE.doubleValue());
 
 		mockMvc.perform(
-				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/decreaseBalance/" + ServiceTestConfiguration.ACCOUNT_BALANCE.add(BigDecimal.TEN))
+				get("/accounts/" + ServiceTestConfiguration.USER_ID + "/decreaseBalance/" + amount)
 						.contentType(MediaType.APPLICATION_JSON).content(
 								convertObjectToJson(ServiceTestConfiguration
 										.account())))

@@ -114,7 +114,7 @@ public class ServiceTestConfiguration {
 	public AccountService accountService() {
 		AccountService accountService = Mockito.mock(AccountService.class);
 
-		when(accountService.findAccount(eq(ACCOUNT_ID))).thenReturn(account());
+		when(accountService.getAccount(eq(ACCOUNT_ID))).thenReturn(account());
 
 		when(accountService.login(eq(USER_ID), eq(PASSWORD))).thenReturn(loginResponse());
 		when(accountService.login(eq(BAD_USER_ID), eq(BAD_PASSWORD))).thenReturn(null);

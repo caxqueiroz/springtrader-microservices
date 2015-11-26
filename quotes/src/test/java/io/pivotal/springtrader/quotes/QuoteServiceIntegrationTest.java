@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.*;
 
 /**
@@ -18,33 +20,33 @@ import static org.junit.Assert.*;
  */
 public class QuoteServiceIntegrationTest {
 
-	QuoteService service = new QuoteService();
+	QuoteService quoteService = new QuoteService();
 	/**
-	 * Tests retrieving a quote from the external service.
+	 * Tests retrieving a quote from the external quoteService.
 	 * @throws Exception
 	 */
 	@Test
 	public void getQuote() throws Exception {
-		Quote quote = service.getQuote(TestConfiguration.QUOTE_SYMBOL);
+		Quote quote = quoteService.getQuote(TestConfiguration.QUOTE_SYMBOL);
 		assertEquals(TestConfiguration.QUOTE_SYMBOL, quote.getSymbol());
 		assertEquals(TestConfiguration.QUOTE_NAME, quote.getName());
 	}
 	/**
-	 * Tests retrieving a quote with an unknown/null symbol from the external service.
+	 * Tests retrieving a quote with an unknown/null symbol from the external quoteService.
 	 * @throws Exception
 	 */
 	@Test(expected=SymbolNotFoundException.class)
 	public void getNullQuote() throws Exception{
-		Quote quote = service.getQuote(TestConfiguration.NULL_QUOTE_SYMBOL);
+		Quote quote = quoteService.getQuote(TestConfiguration.NULL_QUOTE_SYMBOL);
 	}
 	
 	/**
-	 * tests retrieving company information from external service.
+	 * tests retrieving company information from external quoteService.
 	 * @throws Exception
 	 */
 	@Test
 	public void getCompanyInfo() throws Exception {
-		List<CompanyInfo> comps = service.getCompanyInfo(TestConfiguration.QUOTE_SYMBOL);
+		List<CompanyInfo> comps = quoteService.getCompanyInfo(TestConfiguration.QUOTE_SYMBOL);
 		assertFalse(comps.isEmpty());
 		boolean pass = false;
 		for (CompanyInfo info : comps) {
@@ -55,13 +57,24 @@ public class QuoteServiceIntegrationTest {
 		assertTrue(pass);
 	}
 	/**
-	 * tests retrieving company information from external service with unkown company.
+	 * tests retrieving company information from external quoteService with unkown company.
 	 * @throws Exception
 	 */
 	@Test
 	public void getNullCompanyInfo() throws Exception {
-		List<CompanyInfo> comps = service.getCompanyInfo(TestConfiguration.NULL_QUOTE_SYMBOL);
+		List<CompanyInfo> comps = quoteService.getCompanyInfo(TestConfiguration.NULL_QUOTE_SYMBOL);
 		assertTrue(comps.isEmpty());
+	}
+
+	@Test
+	public void searchForCompanies() throws Exception{
+		List<CompanyInfo> comps = quoteService.getCompanyInfo("alphabet");
+		comps.stream().forEach(System.out::println);
+		assertThat(comps.size(),greaterThan(1));
+		assertThat(comps.stream().anyMatch(c-> c.getSymbol().equalsIgnoreCase("GOOGL")), equalTo(true));
+		assertThat(comps.stream().anyMatch(c-> c.getSymbol().equalsIgnoreCase("GOOG")), equalTo(true));
+
+
 	}
 	
 }
