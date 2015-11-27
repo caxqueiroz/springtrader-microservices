@@ -6,6 +6,11 @@ import io.pivotal.springtrader.quotes.domain.Quote;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
 import io.pivotal.springtrader.quotes.services.QuoteService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
@@ -18,9 +23,12 @@ import static org.junit.Assert.*;
  * @author David Ferreira Pinto
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(QuotesApplication.class)
 public class QuoteServiceIntegrationTest {
 
-	QuoteService quoteService = new QuoteService();
+    @Autowired
+	QuoteService quoteService;
 	/**
 	 * Tests retrieving a quote from the external quoteService.
 	 * @throws Exception

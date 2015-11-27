@@ -4,8 +4,10 @@ package io.pivotal.springtrader.quotes.services;
 import io.pivotal.springtrader.quotes.domain.CompanyInfo;
 import io.pivotal.springtrader.quotes.domain.Quote;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
+import io.pivotal.springtrader.quotes.repositories.QuoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,11 @@ public class QuoteService {
 
 	
 	private RestOperations restOperations = new RestTemplate();
+
+    @Autowired
+    QuoteRepository quoteRepository;
+
+
 	/**
 	 * Retrieves an up to date quote for the given symbol.
 	 * 
@@ -47,29 +54,43 @@ public class QuoteService {
 	 * @throws SymbolNotFoundException 
 	 */
     @Cacheable("quotes")
-    public Quote getQuote(String symbol) throws SymbolNotFoundException {
+    public Quote getQuote(String symbol) throws Exception {
         logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
-        Quote quote = new Quote();
-        try{
+        Quote quote;
+        symbol = symbol.toUpperCase();
 
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("symbol", symbol);
+        if(quoteRepository.exists(symbol)) return quoteRepository.findOne(symbol);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("symbol", symbol);
+
+        try{
 
             quote = restOperations.getForObject(quoteUrl, Quote.class, params);
             logger.debug("QuoteService.getQuote: retrieved quote: " + quote);
 
         } catch(Exception e){
             logger.error(e.getMessage(),e);
+            throw new SymbolNotFoundException("Symbol not found: " + symbol);
         }
 
         if (quote.getSymbol() ==  null) {
             throw new SymbolNotFoundException("Symbol not found: " + symbol);
         }
+
+        try{
+
+            quote = quoteRepository.save(quote);
+
+        }catch(Exception e){
+            logger.error(e.getMessage(),e);
+        }
+
         return quote;
 
     }
-	
-	/**
+
+    /**
 	 * Retrieves a list of CompanyInfo objects.
 	 * Given the name parameters, the return list will contain objects that match the search both
 	 * on company name as well as symbol.
@@ -80,7 +101,7 @@ public class QuoteService {
         logger.debug("QuoteService.getCompanyInfo: retrieving info for: " + name);
 
         try {
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put("name", name);
             CompanyInfo[] companies = restOperations.getForObject(companyUrl, CompanyInfo[].class, params);
             List<CompanyInfo> companiesInfo = Arrays.asList(companies);

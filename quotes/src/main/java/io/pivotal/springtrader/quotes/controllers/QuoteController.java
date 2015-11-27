@@ -45,7 +45,7 @@ public class QuoteController {
 	 * @throws SymbolNotFoundException if the symbol is not valid.
 	 */
 	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
-	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws SymbolNotFoundException {
+	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws Exception {
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
 		Quote quote = quoteService.getQuote(symbol);
 		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));

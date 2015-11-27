@@ -3,6 +3,8 @@ package io.pivotal.springtrader.quotes.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.gemfire.mapping.Region;
 
 import java.util.Date;
 
@@ -11,34 +13,8 @@ import java.util.Date;
  * 
  * @author David Ferreira Pinto
  * @author cq
- * Changed to use Yahoo finance.
- *
- * {
- * "query": {
- * "count": 1,
- * "created": "2015-11-04T12:51:29Z",
- * "lang": "en-US",
- * "results": {
- * "quote": {
- * "symbol": "TSLA",
- * "AverageDailyVolume": "4689950",
- * "Change": "-5.44",
- * "DaysLow": "207.75",
- * "DaysHigh": "214.44",
- * "YearLow": "181.40",
- * "YearHigh": "286.65",
- * "MarketCapitalization": "26.49B",
- * "LastTradePriceOnly": "208.35",
- * "DaysRange": "207.75 - 214.44",
- * "Name": "Tesla Motors, Inc.",
- * "Symbol": "TSLA",
- * "Volume": "8365546",
- * "StockExchange": "NMS"
- * }
- * }
- * }
- * }
  */
+@Region("quotes")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
 /*
@@ -61,36 +37,52 @@ public class Quote {
  */
 	@JsonProperty("Status")
 	private String status;
-	@JsonProperty("Name")
+
+    @JsonProperty("Name")
 	private String name;
+
+    @Id
 	@JsonProperty("Symbol")
 	private String symbol;
-	@JsonProperty("LastPrice")
+
+    @JsonProperty("LastPrice")
 	private Double lastPrice;
-	@JsonProperty("Change")
+
+    @JsonProperty("Change")
 	private Double change;
-	@JsonProperty("ChangePercent")
+
+    @JsonProperty("ChangePercent")
 	private Double changePercent;
-	@JsonProperty("Timestamp")
+
+    @JsonProperty("Timestamp")
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
 	private Date timestamp;
-	@JsonProperty("MSDate")
+
+    @JsonProperty("MSDate")
 	private Double mSDate;
-	@JsonProperty("MarketCap")
+
+    @JsonProperty("MarketCap")
 	private Double marketCap;
-	@JsonProperty("Volume")
+
+    @JsonProperty("Volume")
 	private Integer volume;
-	@JsonProperty("ChangeYTD")
+
+    @JsonProperty("ChangeYTD")
 	private Double changeYTD;
-	@JsonProperty("ChangePercentYTD")
+
+    @JsonProperty("ChangePercentYTD")
 	private Double changePercentYTD;
-	@JsonProperty("High")
+
+    @JsonProperty("High")
 	private Double high;
-	@JsonProperty("Low")
+
+    @JsonProperty("Low")
 	private Double low;
-	@JsonProperty("Open")
+
+    @JsonProperty("Open")
 	private Double open;
-	public String getName() {
+
+    public String getName() {
 		return name;
 	}
 	
