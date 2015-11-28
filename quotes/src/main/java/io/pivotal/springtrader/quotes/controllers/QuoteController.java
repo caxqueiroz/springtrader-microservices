@@ -1,8 +1,7 @@
 package io.pivotal.springtrader.quotes.controllers;
 
 
-import io.pivotal.springtrader.quotes.domain.CompanyInfo;
-import io.pivotal.springtrader.quotes.domain.Quote;
+import io.pivotal.springtrader.quotes.domain.Stock;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
 import io.pivotal.springtrader.quotes.services.QuoteService;
 import org.slf4j.Logger;
@@ -41,15 +40,15 @@ public class QuoteController {
 	 * Retrives the current quote for the given symbol.
 	 * 
 	 * @param symbol The symbol to retrieve the quote for.
-	 * @return The Quote
+	 * @return The Stock
 	 * @throws SymbolNotFoundException if the symbol is not valid.
 	 */
 	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
-	public ResponseEntity<Quote> getQuote(@PathVariable("symbol") final String symbol) throws Exception {
+	public ResponseEntity<Stock> getQuote(@PathVariable("symbol") final String symbol) throws Exception {
 		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
-		Quote quote = quoteService.getQuote(symbol);
-		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, quote));
-		return new ResponseEntity<>(quote, getNoCacheHeaders(), HttpStatus.OK);
+		Stock stock = quoteService.getQuote(symbol);
+		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, stock));
+		return new ResponseEntity<>(stock, getNoCacheHeaders(), HttpStatus.OK);
 	}
 	
 	/**
@@ -59,9 +58,9 @@ public class QuoteController {
 	 * @return The list of companies that match the search parameter.
 	 */
 	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
-	public ResponseEntity<List<CompanyInfo>> getCompanies(@PathVariable("name") final String name) {
+	public ResponseEntity<List<Stock>> getCompanies(@PathVariable("name") final String name) {
 		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
-		List<CompanyInfo> companies = quoteService.getCompanyInfo(name);
+		List<Stock> companies = quoteService.companiesByNameOrSymbol(name);
 		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
 		return new ResponseEntity<>(companies, HttpStatus.OK);
 	}

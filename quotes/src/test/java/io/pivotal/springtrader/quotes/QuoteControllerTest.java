@@ -2,9 +2,10 @@ package io.pivotal.springtrader.quotes;
 
 
 import io.pivotal.springtrader.quotes.controllers.QuoteController;
-import io.pivotal.springtrader.quotes.domain.CompanyInfo;
+import io.pivotal.springtrader.quotes.domain.Stock;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
 import io.pivotal.springtrader.quotes.services.QuoteService;
+import net.minidev.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests for the QuoteController.
  * @author David Ferreira Pinto
- *
+ * @author cq
  */
 public class QuoteControllerTest {
 	MockMvc mockMvc;
@@ -45,13 +48,12 @@ public class QuoteControllerTest {
 	}
 	
 	/*
-	 * Tests the <code>/quote</code> REST endpoint.
-	 * test fetching a quote succesfully.
+	 * Tests the <code>/stock</code> REST endpoint.
+	 * test fetching a stock succesfully.
 	 */
 	@Test
 	public void getQuote() throws Exception {
-		when(service.getQuote(TestConfiguration.QUOTE_SYMBOL)).thenReturn(
-				TestConfiguration.quote());
+		when(service.getQuote(TestConfiguration.QUOTE_SYMBOL)).thenReturn(TestConfiguration.stock());
 
 		mockMvc.perform(
 				get("/quote/" + TestConfiguration.QUOTE_SYMBOL).contentType(
@@ -82,8 +84,8 @@ public class QuoteControllerTest {
 	}
 	
 	/*
-	 * Tests the <code>/quote</code> REST endpoint.
-	 * test fetching a quote that has a null symbol and throws exception.
+	 * Tests the <code>/stock</code> REST endpoint.
+	 * test fetching a stock that has a null symbol and throws exception.
 	 */
 	@Test
 	public void getNullQuote() throws Exception {
@@ -102,14 +104,13 @@ public class QuoteControllerTest {
 	 */
 	@Test
 	public void getCompanies() throws Exception {
-		List<CompanyInfo> comps = new ArrayList<>();
-		comps.add(TestConfiguration.company());
-		when(service.getCompanyInfo(TestConfiguration.QUOTE_NAME)).thenReturn(
-				comps);
+		List<Stock> comps = new ArrayList<>();
+		comps.add(TestConfiguration.stock());
+		when(service.companiesByNameOrSymbol(TestConfiguration.QUOTE_NAME)).thenReturn(comps);
 		mockMvc.perform(
 				get("/company/" + TestConfiguration.QUOTE_NAME).contentType(
 						MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 						.andDo(print())
-						.andExpect(jsonPath("$").isArray());
+						.andExpect(jsonPath("$..*",isA(JSONArray.class)));
 	}
 }

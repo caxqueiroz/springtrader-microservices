@@ -1,8 +1,7 @@
 package io.pivotal.springtrader.quotes;
 
 
-import io.pivotal.springtrader.quotes.domain.CompanyInfo;
-import io.pivotal.springtrader.quotes.domain.Quote;
+import io.pivotal.springtrader.quotes.domain.Stock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,9 +33,9 @@ public class TestConfiguration {
 	 * "MarketCap":50755764235,"Volume":15159291,"ChangeYTD":29.74,
 	 * "ChangePercentYTD":-12.1217215870881,"High":0,"Low":0,"Open":26.52}
 	 */
-	public static Quote quote() {
-		Quote quote = new Quote();
-		quote.setName(QUOTE_NAME);
+	public static Stock stock() {
+        Stock quote = new Stock();
+        quote.setStatus("SUCCESS");
 		quote.setSymbol(QUOTE_SYMBOL);
 		quote.setLastPrice(QUOTE_LAST_PRICE);
 		quote.setChange(QUOTE_CHANGE);
@@ -55,15 +54,12 @@ public class TestConfiguration {
 		quote.setHigh(0.0);
 		quote.setLow(0.0);
 		quote.setOpen(26.52);
+
+
+        quote.setExchange(COMPANY_EXCHANGE);
+        quote.setCompanyName(QUOTE_NAME);
+        quote.setSymbol(QUOTE_SYMBOL);
 		return quote;
 		
-	}
-	
-	public static CompanyInfo company() {
-		CompanyInfo comp = new CompanyInfo();
-		comp.setExchange(COMPANY_EXCHANGE);
-		comp.setName(QUOTE_NAME);
-		comp.setSymbol(QUOTE_SYMBOL);
-		return comp;
 	}
 }

@@ -1,17 +1,16 @@
 package io.pivotal.springtrader.quotes;
 
 
-import io.pivotal.springtrader.quotes.domain.CompanyInfo;
-import io.pivotal.springtrader.quotes.domain.Quote;
+import io.pivotal.springtrader.quotes.domain.Stock;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
+import io.pivotal.springtrader.quotes.repositories.StockRepository;
 import io.pivotal.springtrader.quotes.services.QuoteService;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -32,23 +31,34 @@ public class QuoteServiceIntegrationTest {
 
     @Autowired
 	QuoteService quoteService;
-	/**
-	 * Tests retrieving a quote from the external quoteService.
+
+    @Autowired
+    StockRepository stockRepository;
+
+    @After
+    public void tearDown() throws Exception {
+
+        stockRepository.deleteAll();
+
+    }
+
+    /**
+	 * Tests retrieving a stock from the external quoteService.
 	 * @throws Exception
 	 */
 	@Test
 	public void getQuote() throws Exception {
-		Quote quote = quoteService.getQuote(TestConfiguration.QUOTE_SYMBOL);
+		Stock quote = quoteService.getQuote(TestConfiguration.QUOTE_SYMBOL);
 		assertEquals(TestConfiguration.QUOTE_SYMBOL, quote.getSymbol());
-		assertEquals(TestConfiguration.QUOTE_NAME, quote.getName());
+		assertEquals(TestConfiguration.QUOTE_NAME, quote.getCompanyName());
 	}
 	/**
-	 * Tests retrieving a quote with an unknown/null symbol from the external quoteService.
+	 * Tests retrieving a stock with an unknown/null symbol from the external quoteService.
 	 * @throws Exception
 	 */
 	@Test(expected=SymbolNotFoundException.class)
 	public void getNullQuote() throws Exception{
-		Quote quote = quoteService.getQuote(TestConfiguration.NULL_QUOTE_SYMBOL);
+        quoteService.getQuote(TestConfiguration.NULL_QUOTE_SYMBOL);
 	}
 	
 	/**
@@ -57,10 +67,10 @@ public class QuoteServiceIntegrationTest {
 	 */
 	@Test
 	public void getCompanyInfo() throws Exception {
-		List<CompanyInfo> comps = quoteService.getCompanyInfo(TestConfiguration.QUOTE_SYMBOL);
+		List<Stock> comps = quoteService.companiesByNameOrSymbol(TestConfiguration.QUOTE_SYMBOL);
 		assertFalse(comps.isEmpty());
 		boolean pass = false;
-		for (CompanyInfo info : comps) {
+		for (Stock info : comps) {
 			if (info.getSymbol().equals(TestConfiguration.QUOTE_SYMBOL)) {
 				pass = true;
 			}
@@ -73,13 +83,13 @@ public class QuoteServiceIntegrationTest {
 	 */
 	@Test
 	public void getNullCompanyInfo() throws Exception {
-		List<CompanyInfo> comps = quoteService.getCompanyInfo(TestConfiguration.NULL_QUOTE_SYMBOL);
+		List<Stock> comps = quoteService.companiesByNameOrSymbol(TestConfiguration.NULL_QUOTE_SYMBOL);
 		assertTrue(comps.isEmpty());
 	}
 
 	@Test
 	public void searchForCompanies() throws Exception{
-		List<CompanyInfo> comps = quoteService.getCompanyInfo("alphabet");
+		List<Stock> comps = quoteService.companiesByNameOrSymbol("alphabet");
 		comps.stream().forEach(System.out::println);
 		assertThat(comps.size(),greaterThan(1));
 		assertThat(comps.stream().anyMatch(c-> c.getSymbol().equalsIgnoreCase("GOOGL")), equalTo(true));
