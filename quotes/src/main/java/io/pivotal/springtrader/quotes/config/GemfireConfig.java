@@ -1,13 +1,13 @@
-package io.pivotal.springtrader.quotes;
+package io.pivotal.springtrader.quotes.config;
 
 
 import com.gemstone.gemfire.cache.*;
-import com.gemstone.gemfire.internal.cache.EvictionAttributesImpl;
 import io.pivotal.springtrader.quotes.domain.Quote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.gemfire.*;
 
 
@@ -15,6 +15,7 @@ import org.springframework.data.gemfire.*;
  * Created by cax on 27/11/2015.
  */
 @Configuration
+@Profile("local")
 public class GemfireConfig {
 
     @Bean
@@ -36,7 +37,7 @@ public class GemfireConfig {
     }
 
     @Bean
-    public ExpirationAttributesFactoryBean expirationAttriutes() {
+    public ExpirationAttributesFactoryBean expirationAttributes() {
 
         ExpirationAttributesFactoryBean expirationAttributes = new ExpirationAttributesFactoryBean();
 
@@ -47,7 +48,7 @@ public class GemfireConfig {
 
     @Bean
     @Autowired
-    public RegionAttributesFactoryBean partitionRegionAttributes(@Qualifier("expirationAttriutes") ExpirationAttributes expirationAttributes) {
+    public RegionAttributesFactoryBean localRegionAttributes(@Qualifier("expirationAttributes") ExpirationAttributes expirationAttributes) {
 
         RegionAttributesFactoryBean regionAttributes = new RegionAttributesFactoryBean();
         regionAttributes.setEntryTimeToLive(expirationAttributes);

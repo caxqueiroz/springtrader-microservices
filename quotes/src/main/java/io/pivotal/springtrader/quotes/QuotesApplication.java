@@ -4,10 +4,11 @@ package io.pivotal.springtrader.quotes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.config.java.ServiceScan;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
 @SpringBootApplication
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @EnableGemfireRepositories
 public class QuotesApplication {
 

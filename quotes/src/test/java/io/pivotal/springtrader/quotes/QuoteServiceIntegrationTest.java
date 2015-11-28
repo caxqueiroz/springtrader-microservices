@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,10 +23,11 @@ import static org.junit.Assert.*;
 /**
  * Tests the QuoteService.
  * @author David Ferreira Pinto
- *
+ * @author cq
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(QuotesApplication.class)
+@ActiveProfiles("local")
 public class QuoteServiceIntegrationTest {
 
     @Autowired
