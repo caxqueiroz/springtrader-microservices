@@ -1,7 +1,7 @@
 package io.pivotal.springtrader.quotes.config;
 
+import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -32,7 +32,9 @@ public class MongoLocalConfig extends AbstractMongoConfiguration{
 
     @Override
     public Mongo mongo() throws Exception {
-        return new MongoClient("localhost", 27017);
+        Fongo fongo = new Fongo("mongo server 1");
+        return fongo.getMongo();
+//        return new MongoClient("localhost", 27017);
     }
 
     @Override

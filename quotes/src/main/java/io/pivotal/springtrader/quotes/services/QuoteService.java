@@ -56,10 +56,15 @@ public class QuoteService {
         symbol = symbol.toUpperCase();
         Stock stock = stockRepository.findOne(symbol);
 
-        if(stock == null){
+        if(stock == null || stock.getStatus()==null){
             stock = createStock(symbol);
             stock = stockRepository.save(stock);
         }
+
+
+
+        //what's happen if a stock has no info about its quotes?
+
 
         return stock;
 
@@ -107,6 +112,7 @@ public class QuoteService {
         List<Stock> stockList = new ArrayList<>();
         try {
 
+            //only search for name.
             stockList = stockRepository.findByCompanyNameLike(name);
             if(stockList.size()>0) return stockList;
 
