@@ -12,4 +12,4 @@ applications:
   path: target/quotes-1.0.0-SNAPSHOT.jar
 #  services: [ service-registry, circuit-breaker-dashboard ]
   services:
-  - quotes-cache
+  - mongodb-dev
