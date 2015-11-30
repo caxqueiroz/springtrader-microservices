@@ -2,7 +2,6 @@ package io.pivotal.springtrader.quotes.repositories;
 
 import io.pivotal.springtrader.quotes.domain.Stock;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
