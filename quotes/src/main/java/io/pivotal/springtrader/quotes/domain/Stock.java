@@ -1,8 +1,14 @@
 package io.pivotal.springtrader.quotes.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
@@ -10,13 +16,19 @@ import java.util.Date;
 /**
  * Created by cax on 28/11/2015.
  */
-
+@Document(collection="LocalStocks")
 public class Stock {
 
     @Id
     @JsonProperty("Symbol")
     private String symbol;
 
+    @Indexed(expireAfterSeconds = 60)
+    @LastModifiedDate
+    @JsonIgnore
+    private DateTime lastModifiedDate;
+
+    @Indexed()
     @JsonProperty("Name")
     private String companyName;
 
@@ -63,6 +75,13 @@ public class Stock {
     @JsonProperty("Open")
     private Double open;
 
+    public DateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(DateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     public String getSymbol() {
         return symbol;
@@ -192,5 +211,25 @@ public class Stock {
         this.open = open;
     }
 
-
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "symbol='" + symbol + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", exchange='" + exchange + '\'' +
+                ", status='" + status + '\'' +
+                ", lastPrice=" + lastPrice +
+                ", change=" + change +
+                ", changePercent=" + changePercent +
+                ", timestamp=" + timestamp +
+                ", mSDate=" + mSDate +
+                ", marketCap=" + marketCap +
+                ", volume=" + volume +
+                ", changeYTD=" + changeYTD +
+                ", changePercentYTD=" + changePercentYTD +
+                ", high=" + high +
+                ", low=" + low +
+                ", open=" + open +
+                '}';
+    }
 }

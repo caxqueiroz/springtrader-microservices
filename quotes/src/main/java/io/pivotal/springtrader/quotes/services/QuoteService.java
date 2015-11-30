@@ -106,6 +106,10 @@ public class QuoteService {
         logger.debug("QuoteService.companiesByNameOrSymbol: retrieving info for: " + name);
         List<Stock> stockList = new ArrayList<>();
         try {
+
+            stockList = stockRepository.findByCompanyNameLike(name);
+            if(stockList.size()>0) return stockList;
+
             Map<String, String> params = new HashMap<>();
             params.put("name", name);
             Map[] companies = restOperations.getForObject(companyUrl, Map[].class, params);
