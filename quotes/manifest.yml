@@ -6,10 +6,10 @@ memory: 512M
 env:
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    CF_TARGET: https://api.run.pez.pivotal.io
 applications:
 - name: quotes
   random-route: true
   path: target/quotes-1.0.0-SNAPSHOT.jar
-#  services: [ service-registry, circuit-breaker-dashboard ]
-  services:
-  - mongodb-dev
+  services: [ service-registry, mongodb-dev ]
+

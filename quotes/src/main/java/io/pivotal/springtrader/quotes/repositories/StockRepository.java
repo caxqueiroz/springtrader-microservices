@@ -12,6 +12,5 @@ import java.util.List;
 @Repository
 public interface StockRepository extends MongoRepository<Stock, String>{
 
-
     List<Stock> findByCompanyNameLike(String companyName);
 }

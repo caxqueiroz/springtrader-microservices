@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
  * @author cq
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(QuotesApplication.class)
+@SpringApplicationConfiguration(classes = {QuotesApplication.class})
 @ActiveProfiles("local")
 public class QuoteServiceIntegrationTest {
 
