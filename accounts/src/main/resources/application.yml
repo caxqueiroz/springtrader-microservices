@@ -11,6 +11,11 @@ eureka:
     metadataMap:
       instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
 
+
+security:
+  basic:
+    enabled: false
+
 ---
 spring:
   profiles: local

@@ -10,7 +10,7 @@ import java.util.List;
  * Created by cax on 28/11/2015.
  */
 @Repository
-public interface StockRepository extends MongoRepository<Stock, String>{
+public interface StockRepository extends MongoRepository<Stock, String> {
 
-    List<Stock> findByCompanyNameLike(String companyName);
+    List<Stock> findByNameLike(String companyName);
 }

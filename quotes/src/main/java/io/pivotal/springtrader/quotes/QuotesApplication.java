@@ -11,6 +11,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class QuotesApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(QuotesApplication.class,args);
+        SpringApplication.run(QuotesApplication.class, args);
     }
 }

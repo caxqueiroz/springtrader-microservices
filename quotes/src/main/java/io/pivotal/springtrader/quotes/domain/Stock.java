@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * Created by cax on 28/11/2015.
  */
-@Document(collection="LocalStocks")
+@Document(collection = "Stocks")
 public class Stock {
 
     @Id
@@ -29,7 +29,7 @@ public class Stock {
 
     @Indexed()
     @JsonProperty("Name")
-    private String companyName;
+    private String name;
 
     @JsonProperty("Exchange")
     private String exchange;
@@ -37,7 +37,7 @@ public class Stock {
     @JsonProperty("Status")
     private String status;
 
-    @JsonProperty("LastPrice")
+    @JsonProperty(value = "LastPrice")
     private Double lastPrice;
 
     @JsonProperty("Change")
@@ -47,7 +47,7 @@ public class Stock {
     private Double changePercent;
 
     @JsonProperty("Timestamp")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE MMM dd HH:mm:ss zzzXXX yyyy", locale = "ENGLISH")
     private Date timestamp;
 
     @JsonProperty("MSDate")
@@ -90,12 +90,12 @@ public class Stock {
         this.symbol = symbol;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getExchange() {
@@ -214,7 +214,7 @@ public class Stock {
     public String toString() {
         return "Stock{" +
                 "symbol='" + symbol + '\'' +
-                ", companyName='" + companyName + '\'' +
+                ", name='" + name + '\'' +
                 ", exchange='" + exchange + '\'' +
                 ", status='" + status + '\'' +
                 ", lastPrice=" + lastPrice +

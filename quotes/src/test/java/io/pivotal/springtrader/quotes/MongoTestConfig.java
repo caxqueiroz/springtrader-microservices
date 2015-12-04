@@ -1,8 +1,7 @@
-package io.pivotal.springtrader.quotes.config;
+package io.pivotal.springtrader.quotes;
 
-
+import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,13 +12,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
- * Created by cax on 28/11/2015.
+ * Created by cq on 4/12/15.
  */
 @Configuration
-@Profile("local")
+@Profile("test")
 @EnableMongoAuditing
 @EnableMongoRepositories(basePackages = {"io.pivotal.springtrader.quotes"})
-public class MongoLocalConfig extends AbstractMongoConfiguration {
+public class MongoTestConfig extends AbstractMongoConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate(MongoDbFactory mongoDbFactory) {
@@ -33,9 +32,9 @@ public class MongoLocalConfig extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-//        Fongo fongo = new Fongo("mongo server local");
-//        return fongo.getMongo();
-        return new MongoClient("localhost", 27017);
+        Fongo fongo = new Fongo("mongo server local");
+        return fongo.getMongo();
+
     }
 
     @Override
