@@ -13,6 +13,9 @@ security:
   basic:
     enabled: false
 
+expiration:
+  time: -1 # enable offline mode. no expiration.
+
 ---
 spring:
   profiles: local

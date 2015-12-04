@@ -35,6 +35,7 @@ public class DatabaseLoader {
             Stock[] arrayOfStocks = mapper.readValue(DatabaseLoader.class.getResource("/data.json"),Stock[].class);
             List<Stock> stocks = Arrays.asList(arrayOfStocks);
             stockRepository.save(stocks);
+            logger.info(stockRepository.count() + " stocks loaded into the Quotes collection");
 
 
         } catch (IOException e) {

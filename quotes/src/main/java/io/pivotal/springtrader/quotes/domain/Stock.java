@@ -22,7 +22,6 @@ public class Stock {
     @JsonProperty("Symbol")
     private String symbol;
 
-    @Indexed(expireAfterSeconds = 60)
     @LastModifiedDate
     @JsonIgnore
     private DateTime lastModifiedDate;
