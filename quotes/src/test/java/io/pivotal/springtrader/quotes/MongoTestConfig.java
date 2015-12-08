@@ -27,7 +27,7 @@ public class MongoTestConfig extends AbstractMongoConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return "Stocks";
+        return "Quotes";
     }
 
     @Override

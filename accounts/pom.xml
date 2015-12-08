@@ -46,12 +46,6 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,18 +59,6 @@
 		</dependency>
 	</dependencies>
 	
-	<!--<dependencyManagement>-->
-		<!--<dependencies>-->
-			<!--<dependency>-->
-				<!--<groupId>org.springframework.cloud</groupId>-->
-				<!--<artifactId>spring-cloud-starter-parent</artifactId>-->
-				<!--<version>Brixton.M3</version>-->
-				<!--<type>pom</type>-->
-				<!--<scope>import</scope>-->
-			<!--</dependency>-->
-		<!--</dependencies>-->
-	<!--</dependencyManagement>-->
-	
 	<build>
 		<plugins>
 			<plugin>
@@ -87,6 +69,10 @@
 	</build>
 	
 	<repositories>
+		<repository>
+			<id>spring-milestones-lib</id>
+			<url>http://repo.spring.io/libs-milestone/</url>
+		</repository>
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>

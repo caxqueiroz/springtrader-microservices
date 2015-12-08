@@ -114,12 +114,10 @@ public class AccountService {
 
 		logger.debug("AccountService.saveAccount:" + accountRequest.toString());
 		// need to set some stuff that cannot be null!
-		if (accountRequest.getLogincount() == null) {
-			accountRequest.setLogincount(0);
-		}
-		if (accountRequest.getLogoutcount() == null) {
-			accountRequest.setLogoutcount(0);
-		}
+		if (accountRequest.getLogincount() == null) accountRequest.setLogincount(0);
+		if (accountRequest.getLogoutcount() == null) accountRequest.setLogoutcount(0);
+		if(accountRequest.getCreationdate() == null) accountRequest.setCreationdate(new Date());
+
 
 		Account account = accountRepository.save(accountRequest);
 		logger.info("AccountService.saveAccount: account saved: " + account);
@@ -136,7 +134,7 @@ public class AccountService {
 	 */
 	public Map<String, Object> login(String username, String password) {
 		logger.debug("login in user: " + username);
-		Map<String, Object> loginResponse = null;
+		Map<String, Object> loginResponse;
 		Account account = accountRepository.findByUseridAndPasswd(username, password);
 		if (account != null) {
 			logger.debug("Found Account for user: " + username);
@@ -149,7 +147,6 @@ public class AccountService {
 
 			loginResponse.put("authToken", account.getAuthtoken());
 			loginResponse.put("accountid", account.getId());
-			//loginResponse.put("password", account.getPasswd());
 			
 			logger.info("AccountService.login success for " + username
 					+ " username::token=" + loginResponse.get("authToken"));

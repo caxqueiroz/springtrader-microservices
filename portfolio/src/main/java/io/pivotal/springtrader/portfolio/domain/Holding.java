@@ -68,17 +68,19 @@ public class Holding {
 	
 	public void addOrder(Order order) {
 		//check order is not already in.
-		if (orders.contains(order)) {
-			//TODO: throw RuntimeException?? and do nothing;
-		} else {
+		if (!orders.contains(order)) {
 			orders.add(order);
 			//update stats
 			if (order.getOrderType().equals(OrderType.BUY)) {
-				setQuantity(getQuantity()+order.getQuantity());
+
+				setQuantity(getQuantity() + order.getQuantity());
 				setPurchaseValue(getPurchaseValue().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
+
 			} else if (order.getOrderType().equals(OrderType.SELL)) {
-				setQuantity(getQuantity()-order.getQuantity());
+
+				setQuantity(getQuantity() - order.getQuantity());
 				setSellValue(getSellValue().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
+
 			}
 		}
 	}
