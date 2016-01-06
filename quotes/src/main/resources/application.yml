@@ -33,6 +33,10 @@ spring:
 eureka:
   instance:
     nonSecurePort: 80
+
+    securePortEnabled: true
+
+    securePort: 80
 ---
 logging:
   level:
