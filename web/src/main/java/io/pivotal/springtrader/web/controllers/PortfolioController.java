@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PortfolioController {
-	private static final Logger logger = LoggerFactory
-			.getLogger(PortfolioController.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(PortfolioController.class);
 	
 	@Autowired
 	private PortfolioIntegrationService portfolioIntegrationService;

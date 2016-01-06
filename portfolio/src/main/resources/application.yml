@@ -2,6 +2,11 @@ spring:
   profiles.active: local
   application:
      name: portfolio
+
+security:
+  basic:
+    enabled: false
+
 eureka:
   instance:
     hostname: ${vcap.application.uris[0]:localhost}
