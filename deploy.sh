@@ -5,16 +5,8 @@ cf delete accounts -f
 cf delete portfolio -f
 cf delete webtrader -f
 
-cd quotes
-cf push
-cd ..
-cf accounts
-cf push
-cd ..
-cd portfolio
-cf push 
-cd ..
-cd web
-cf push
-cd ..
 
+cf push -f quotes/manifest.yml
+cf push -f accounts/manifest.yml
+cf push -f portfolio/manifest.yml
+cf push -f web/manifest.yml
