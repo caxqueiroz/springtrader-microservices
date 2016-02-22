@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.math.BigDecimal;
-
 /**
  * REST controller for the accounts microservice.
  * Provides the following endpoints:
@@ -51,7 +49,7 @@ public class AccountController {
 		Account accountResponse = accountService.getAccount(id);
 		return new ResponseEntity<>(accountResponse,getNoCacheHeaders(), HttpStatus.OK);
 	}
-	//TODO: do we need this? need to change web accountService to use find() above.
+
 	@RequestMapping(value = "/account/", method = RequestMethod.GET)
 	public ResponseEntity<Account> findAccount(@RequestParam(value="name") final String id) {
 
@@ -94,8 +92,6 @@ public class AccountController {
 
 		logger.debug("AccountController.decreaseBalance: id='" + userId + "', amount='"+amount+"'");
 
-
-		
 		if (amount > 0.0) {
 
             double currentBalance = accountService.getAccount(userId).getBalance().doubleValue();

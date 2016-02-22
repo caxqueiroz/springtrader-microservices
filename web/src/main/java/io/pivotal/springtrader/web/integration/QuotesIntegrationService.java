@@ -59,7 +59,6 @@ public class QuotesIntegrationService {
 	
 	private Quote getQuoteFallback(String symbol) {
 		logger.debug("Fetching fallback quote for: " + symbol);
-		//Quote quote = restTemplate.getForObject("http://quotes/quote/{symbol}", Quote.class, symbol);
 		Quote quote = new Quote();
 		quote.setSymbol(symbol);
 		quote.setStatus("FAILED");
@@ -83,8 +82,8 @@ public class QuotesIntegrationService {
 	@Scheduled(fixedRate = REFRESH_PERIOD)
 	protected void retrieveMarketSummary() {
 		logger.debug("Scheduled retrieval of Market Summary");
-		List<Quote> quotesIT = pickRandomThree(symbolsIT).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
-		List<Quote> quotesFS = pickRandomThree(symbolsFS).parallelStream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		List<Quote> quotesIT = pickRandomThree(symbolsIT).stream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
+		List<Quote> quotesFS = pickRandomThree(symbolsFS).stream().map(symbol -> getQuote(symbol)).collect(Collectors.toList());
 		summary.setTopGainers(quotesIT);
 		summary.setTopLosers(quotesFS);
 	}

@@ -1,11 +1,12 @@
 ---
 timeout: 180
 instances: 1
-memory: 512M
+memory: 1G
 buildpack: java_buildpack_offline
 env:
-    SPRING_PROFILES_DEFAULT: cloud
+    SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    CF_TARGET: https://api.pcf12.cloud.fe.pivotal.io
 applications:
 - name: accounts
   random-route: true

@@ -48,12 +48,7 @@ public class PortfolioController {
 		logger.debug("PortfolioController: Retrieved portfolio:" + folio);
 		return new ResponseEntity<>(folio, getNoCacheHeaders(), HttpStatus.OK);
 	}
-	
-	private HttpHeaders getNoCacheHeaders() {
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("Cache-Control", "no-cache");
-		return responseHeaders;
-	}
+
 	/**
 	 * Adds an order to the portfolio of the given account.
 	 * 
@@ -79,5 +74,11 @@ public class PortfolioController {
 			logger.warn("Order not saved: " + order);
 			return new ResponseEntity<Order>(savedOrder, responseHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	private HttpHeaders getNoCacheHeaders() {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set("Cache-Control", "no-cache");
+		return responseHeaders;
 	}
 }
